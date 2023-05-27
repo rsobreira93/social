@@ -5,7 +5,7 @@ import {
 } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { AppError } from 'src/shared/errors/app-errors';
+import { AppError } from '@shared/errors/app-errors';
 
 @Injectable()
 export class MulterConfigService implements MulterOptionsFactory {
