@@ -24,4 +24,8 @@ export class CreateUserBody {
     message: 'password too weak',
   })
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  birthDate: string;
 }
