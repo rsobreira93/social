@@ -5,6 +5,11 @@
 # environment variables
 .env
 
+# tmp files
+tmp/*
+
+!tmp/.gitkeep
+
 # Logs
 logs
 *.log
