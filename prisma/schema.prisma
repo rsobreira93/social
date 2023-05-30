@@ -11,28 +11,76 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   name      String
   email     String
   password  String
   birthDate String
   avatarUrl String?
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
-  posts     Post[]
+
+  posts         Post[]
+  LikeOnPost    LikeOnPost[]
+  Comment       Comment[]
+  LikeOnComment LikeOnComment[]
 
   @@map("users")
 }
 
 model Post {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String?
   description String
   mediaUrl    String?
-  user        User     @relation(fields: [ownerId], references: [id])
+  user        User    @relation(fields: [ownerId], references: [id])
   ownerId     String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt() @map("updated_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  Comment    Comment[]
+  LikeOnPost LikeOnPost[]
 
   @@map("posts")
+}
+
+model LikeOnPost {
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     String
+  isLiked    Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  assignedAt DateTime @default(now())
+
+  @@id([postId, userId])
+}
+
+model Comment {
+  id       String  @id @default(uuid())
+  text     String
+  mediaURL String?
+  post     Post    @relation(fields: [postId], references: [id])
+  postId   String
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  LikeOnComment LikeOnComment[]
+
+  @@map("comments")
+}
+
+model LikeOnComment {
+  comment    Comment  @relation(fields: [commentId], references: [id])
+  commentId  String
+  isLiked    Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  assignedAt DateTime @default(now())
+
+  @@id([commentId, userId])
 }
